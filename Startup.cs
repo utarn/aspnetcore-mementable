@@ -12,6 +12,8 @@ using aspnetcore_mementable.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using aspnetcore_mementable.MementoExtension.Services;
+using aspnetcore_mementable.MementoExtension.Interfaces;
 
 namespace aspnetcore_mementable
 {
@@ -32,8 +34,14 @@ namespace aspnetcore_mementable
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // services.AddScoped<StateDbContext, ApplicationDbContext>();
+            // services.AddScoped<StateManager<BlogPost>>();
+            services.RegisterStateDbContext<ApplicationDbContext>();
+            services.RegisterState<BlogPost>();
+
             services.AddControllersWithViews();
-           services.AddRazorPages();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
